@@ -16,6 +16,8 @@ describe("/api/categories", () => {
         .expect(200)
         .then(({ body }) => {
           expect(body.categories).toBeInstanceOf(Array);
+          expect(body.categories.length).toBeGreaterThan(0)
+          console.log(body.categories)
           body.categories.forEach((category) => {
             expect(category).toMatchObject({
               slug: expect.any(String),
