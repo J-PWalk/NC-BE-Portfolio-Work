@@ -1,7 +1,9 @@
-const db = require('../connection')
+const db = require("../connection");
 
 exports.fetchAllReviews = () => {
-    return db.query(`SELECT 
+  return db
+    .query(
+      `SELECT 
         reviews.review_id, 
         owner, 
         title, 
@@ -14,8 +16,10 @@ exports.fetchAllReviews = () => {
         FROM reviews LEFT JOIN comments 
         ON reviews.review_id = comments.review_id
     GROUP BY reviews.review_id
-    ORDER BY reviews.created_at DESC; `)
-    .then(({rows})=>{
-        return rows
-    })
-}
+    ORDER BY reviews.created_at DESC; `
+    )
+    .then(({ rows }) => {
+      return rows;
+    });
+};
+

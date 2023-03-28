@@ -1,12 +1,11 @@
-const { fetchAllReviews } = require("../Models/reviews.model")
+const { fetchAllReviews } = require("../Models/reviews.model");
 
-exports.getReviews = (req,res, next) => {
-    fetchAllReviews()
-    .then((reviews)=>{
-        res.status(200)
-        .send({reviews:reviews})
+exports.getReviews = (req, res, next) => {
+  fetchAllReviews()
+    .then((reviews) => {
+      res.status(200).send({ reviews: reviews });
     })
-    .catch((err)=>{
-        next(err)
-    })
-}
+    .catch((err) => {
+      next(err);
+    });
+};
