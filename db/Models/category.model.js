@@ -6,3 +6,4 @@ exports.fetchCategories = () => {
         return data.rows
     })
 }
+
