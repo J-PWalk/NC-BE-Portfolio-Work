@@ -16,3 +16,29 @@ exports.fetchReview = (review_id) => {
   });
 };
 
+exports.fetchAllReviews = () => {
+  let queryString =  `
+  SELECT 
+  reviews.review_id, 
+  owner, 
+  title, 
+  designer, 
+  review_img_url, 
+  category, 
+  reviews.created_at, 
+  reviews.votes, 
+  COUNT(comments.comment_id) AS comment_count 
+  FROM reviews 
+  LEFT JOIN comments 
+  ON comments.review_id = reviews.review_id
+  GROUP BY reviews.review_id 
+  ORDER BY reviews.created_at DESC`;
+
+  return db
+    .query(queryString)
+    .then(({ rows }) => {
+      console.log(rows)
+      return rows;
+    });
+};
+
