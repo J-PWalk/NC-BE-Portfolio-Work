@@ -136,26 +136,26 @@ describe("/api/reviews/:review_id/comments", () => {
    })
    it("GET:400 should send an appropriate error message when given an invalid id'", () => {
     return request(app)
-      .get("/api/reviews/not_a_num/comments")
+      .get("/api/reviews/notvalid/comments")
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid Input");
       });
   });
-  it("GET 404: should when given id with no value responds with message 'no comments found'", () => {
+  it("GET 404: should when given id with no value responds with message 'no review found'", () => {
     return request(app)
       .get("/api/reviews/999/comments")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("No comments found");
+        expect(body.msg).toBe("No review found");
       });
   });
-//   it('should return a status 200 and empty comments array for a valid Review ID with no comments', () => {
-//     return request(app)
-//     .get('/api/reviews/8/comments')
-//     .expect(200)
-//     .then(({body})=>{
-//       console.log(body.comments)
-//       expect(body.comments).toEqual([])
-//     })
-// });
+  it('should return a status 200 and empty comments array for a valid Review ID with no comments', () => {
+    return request(app)
+    .get('/api/reviews/1/comments')
+    .expect(200)
+    .then(({body})=>{
+      console.log(body.comments)
+      expect(body.comments).toEqual([])
+    })
+});

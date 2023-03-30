@@ -8,12 +8,8 @@ exports.fetchComments = (reviewId) => {
       ORDER BY created_at DESC;
       `;
     return db.query(sqlQuery, [reviewId]).then((response) => {
-      if (!response.rows[0]) {
-        return Promise.reject({
-          status: 404,
-          msg: "No comments found",
-        });
-      }
+      console.log(response.rows, "<--------")
+    
       return response.rows;
   });
 }
