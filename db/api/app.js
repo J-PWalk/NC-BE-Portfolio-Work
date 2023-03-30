@@ -3,6 +3,7 @@ const { handleCustomErrors, handlePSQLErrors } = require('../Controllers/errors.
 const { getCategories } = require('../Controllers/category.controller')
 const { getReview } = require('../Controllers/reviews.controller')
 
+
 const app = express();
 
 app.get('/api/categories', getCategories);
