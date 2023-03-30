@@ -80,7 +80,7 @@ describe("/api/reviews/:review_id", () => {
   });
 });
 
-describe.only("/api/reviews", () => {
+describe("/api/reviews", () => {
   describe("METHOD: GET", () => {
     it("GET: 200 should respond with status 200 and array of reviews sorted by descending date", () => {
       return request(app)
@@ -109,3 +109,14 @@ describe.only("/api/reviews", () => {
     })
   });
 });
+
+// describe("/api/reviews/:review_id/comments", () => {
+//   it("GET 200: should respond with array of comments for review_id requetsed", () => {
+//     return request(app)
+//       .get("/api/reviews/3/comments")
+//       .expect(200)
+//       .then(({ body }) => {
+//         expect(body.comments).toBeInstanceOf(Array);
+//           });
+//         });
+//       });
