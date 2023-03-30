@@ -6,7 +6,8 @@ const { getReview } = require('../Controllers/reviews.controller')
 const app = express();
 
 app.get('/api/categories', getCategories);
-app.get('/api/reviews/:reviewID',getReview)
+app.get('/api/reviews/:reviewID',getReview);
+
 
 
 app.use(handleCustomErrors);
