@@ -8,7 +8,6 @@ exports.fetchComments = (reviewId) => {
       ORDER BY created_at DESC;
       `;
     return db.query(sqlQuery, [reviewId]).then((response) => {
-      console.log(response.rows, "<--------")
     
       return response.rows;
   });

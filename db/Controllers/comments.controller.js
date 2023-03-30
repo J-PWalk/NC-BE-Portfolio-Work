@@ -14,3 +14,15 @@ exports.getComments = (req, res, next) => {
       next(err)
     })
 };
+
+
+exports.postReviewComment = (req, res, next) => {
+  const {reviewID} = req.params
+  const {body} = req
+
+  fetchPostComment(reviewID, body).then(([comment])=>{
+    res.status(201).send({comment})
+  }).catch((err)=>{
+    next(err)
+  })
+}

@@ -130,6 +130,7 @@ describe("/api/reviews/:review_id/comments", () => {
             body: expect.any(String),
             review_id: expect.any(Number),
           })
+          expect(comment.review_id).toBe(3);
         })
       });
     });
@@ -155,7 +156,6 @@ describe("/api/reviews/:review_id/comments", () => {
     .get('/api/reviews/1/comments')
     .expect(200)
     .then(({body})=>{
-      console.log(body.comments)
       expect(body.comments).toEqual([])
     })
 });
