@@ -80,7 +80,7 @@ describe("/api/reviews/:review_id", () => {
   });
 });
 
-describe.only("/api/reviews", () => {
+describe("/api/reviews", () => {
   describe("METHOD: GET", () => {
     it("GET: 200 should respond with status 200 and array of reviews sorted by descending date", () => {
       return request(app)
@@ -108,4 +108,54 @@ describe.only("/api/reviews", () => {
         });
     })
   });
+});
+
+describe("/api/reviews/:review_id/comments", () => {
+  it("GET 200: should respond with array of comments for review_id requetsed", () => {
+    return request(app)
+      .get("/api/reviews/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toBeInstanceOf(Array);
+        expect(body.comments).toBeSortedBy("created_at", {
+          descending: true,
+        });
+        expect(body.comments.length).toBe(3);
+        body.comments.forEach((comment) => {
+          expect(comment).toMatchObject({
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            review_id: expect.any(Number),
+          })
+          expect(comment.review_id).toBe(3);
+        })
+      });
+    });
+   })
+   it("GET:400 should send an appropriate error message when given an invalid id'", () => {
+    return request(app)
+      .get("/api/reviews/notvalid/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid Input");
+      });
+  });
+  it("GET 404: should when given id with no value responds with message 'no review found'", () => {
+    return request(app)
+      .get("/api/reviews/999/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No review found");
+      });
+  });
+  it('should return a status 200 and empty comments array for a valid Review ID with no comments', () => {
+    return request(app)
+    .get('/api/reviews/1/comments')
+    .expect(200)
+    .then(({body})=>{
+      expect(body.comments).toEqual([])
+    })
 });
