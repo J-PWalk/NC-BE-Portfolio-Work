@@ -214,4 +214,17 @@ describe('METHOD: POST', () => {
         expect(body.msg).toBe('Invalid username')
       })
     })
+    it('POST 201 with extra properties should ignore extra properties and post to valid endpoints', () => {
+      return request(app)
+      .post('/api/reviews/5/comments')
+      .send({username: 'dav3rid', body:'nice lunch!', slogan: 'hooray for food!'})
+      .expect(201)
+      .then(({body})=>{
+        const {comment} = body
+        expect(comment.comment_id).toBe(7)
+        expect(comment.review_id).toBe(5)
+        expect(comment.author).toBe('dav3rid')
+        expect(comment.body).toBe('nice lunch!')
+      })
+    });
   });

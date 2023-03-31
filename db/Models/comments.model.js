@@ -15,12 +15,6 @@ exports.fetchComments = (reviewId) => {
 exports.fetchComment = (review_id, commentObj) => {
   const params = [commentObj.username, commentObj.body, review_id]
   let sqlQuery = `INSERT INTO comments (author, body, review_id) VALUES ($1,$2,$3) RETURNING *;`
-  console.log("in model")
-  // console.log(review_id)
-  // console.log(commentObj)
-  console.log(params)
-
-  
   return db.query(sqlQuery, params ).then(({rows})=>{
     console.log(rows)
     return rows 
