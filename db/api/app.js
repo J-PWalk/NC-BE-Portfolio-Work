@@ -3,7 +3,7 @@ const { handlePSQLErrors, handleCustomErrors, handleServerErrors } = require('..
 const { getCategories } = require('../Controllers/category.controller')
 const { getReview } = require('../Controllers/reviews.controller')
 const { getReviews } = require('../Controllers/reviews.controller');
-const { getComments } = require("../Controllers/comments.controller");
+const { getComments, postComment } = require("../Controllers/comments.controller");
 
 
 const app = express();
@@ -16,9 +16,11 @@ app.get('/api/reviews/:reviewID',getReview)
 app.get('/api/reviews', getReviews);
 
 app.get("/api/reviews/:review_id/comments", getComments);
+app.post("/api/reviews/:review_id/comments", postComment);
 
-app.use(handlePSQLErrors);
+
 app.use(handleCustomErrors);
+app.use(handlePSQLErrors);
 app.use(handleServerErrors);
 
 
