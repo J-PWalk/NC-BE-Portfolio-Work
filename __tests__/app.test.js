@@ -158,4 +158,60 @@ describe("/api/reviews/:review_id/comments", () => {
     .then(({body})=>{
       expect(body.comments).toEqual([])
     })
+    
 });
+
+describe('METHOD: POST', () => {
+  it('.postComment should post a comment with status 201', () => {
+    const commentPost = {
+      username: 'mallionaire' , body: 'please work'
+    }
+    return request(app)
+    .post('/api/reviews/8/comments')
+    .send(commentPost)
+    .expect(201)
+    .then(({ body }) => {
+      expect(body.comment).toMatchObject({
+        comment_id: expect.any(Number),
+        votes: 0,
+        created_at: expect.any(String),
+        author: "mallionaire",
+        body: "please work",
+        review_id: 8,
+      })
+    })
+    })
+    it("POST 400: invalid review_id error", () => {
+      const commentObj = {
+        username: "Haz",
+        body: "oops not valid input",
+      };
+      return request(app)
+        .post("/api/reviews/invalid_input/comments")
+        .send(commentObj)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toMatchObject({
+            msg: "Invalid Input",
+          });
+        });
+    })
+    it('POST 400 should respond with a 400 bad request for missing required comment properties', () => {
+      return request(app)
+      .post('/api/reviews/5/comments')
+      .send({username: 'Haz'})
+      .expect(400)
+      .then(({body})=>{
+        expect(body.msg).toBe('Incomplete body')
+      })
+    })
+    it('POST 404 should respond with 404 status message for an Invalid User', () => {
+      return request(app)
+      .post('/api/reviews/3/comments')
+      .send({username: 'Jp', body: 'do i exist'})
+      .expect(404)
+      .then(({body})=>{
+        expect(body.msg).toBe('Invalid username')
+      })
+    })
+  });
