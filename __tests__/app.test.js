@@ -228,3 +228,103 @@ describe('METHOD: POST', () => {
       })
     });
   });
+
+  describe("PATCH", () => {
+    it("PATCH 200: should respond with updated review after votes +1", () => {
+      return request(app)
+        .patch("/api/reviews/2")
+        .send({ inc_votes: 1 })
+        .expect(200)
+        .then(({ body }) => {
+          const {review} = body
+          expect(review).toMatchObject({
+            title: "Jenga",
+            designer: "Leslie Scott",
+            owner: "philippaclaire9",
+            review_img_url:
+            "https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700",
+            review_body: "Fiddly fun for all the family",
+            category: "dexterity",
+            created_at: expect.any(String),
+            votes: 6,
+          });
+        });
+    });
+    it("PATCH 200: should respond with updated review after votes -1", () => {
+      return request(app)
+        .patch("/api/reviews/4")
+        .send({ inc_votes: -1 })
+        .expect(200)
+        .then(({ body }) => {
+          const {review} = body
+          expect(review).toMatchObject({
+            title: "Dolor reprehenderit",
+            designer: "Gamey McGameface",
+            owner: "mallionaire",
+            review_img_url:
+            "https://images.pexels.com/photos/278918/pexels-photo-278918.jpeg?w=700&h=700",
+            review_body: expect.any(String),
+            category: "social deduction",
+            created_at: expect.any(String),
+            votes: 6,
+          });
+        });
+    });
+    it('PATCH 200: should e proprties and return status 200 with an updated review', () => {
+      return request(app)
+      .patch('/api/reviews/2')
+      .send({inc_votes: 4,
+            publication: 'Wibbly Wobbly magazine'})
+      .expect(200)
+      .then(({body})=>{
+        const {review} = body
+        expect(review).toMatchObject({
+          title: "Jenga",
+          designer: "Leslie Scott",
+          owner: "philippaclaire9",
+          review_img_url:
+          "https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700",
+          review_body: "Fiddly fun for all the family",
+          category: "dexterity",
+          created_at: expect.any(String),
+          votes: 9,
+        })
+      })
+    });
+    it("PATCH 400: if no votes given respond with error message ", () => {
+      return request(app)
+        .patch("/api/reviews/1")
+        .send({ NotAVote: 0 })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("No votes found");
+        });
+    });
+    it("PATCH 400: if inc_votes uses invalid input from user respond with error message", () => {
+      return request(app)
+        .patch("/api/reviews/1")
+        .send({ inc_votes: "not-a-number" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid Input");
+        });
+    });
+    it("PATCH 400: should responds with revlevant error message when incorrect path input for review id endpoint", () => {
+      return request(app)
+        .patch("/api/reviews/not_an_id")
+        .send({ inc_votes: 1 })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid Input");
+        });
+    });
+    it("PATCH 404: shouod respond with custom error message when correct format used but no review found", () => {
+      return request(app)
+        .patch("/api/reviews/0")
+        .send({ inc_votes: 1 })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("No review found with this ID");
+        });
+    });
+  });

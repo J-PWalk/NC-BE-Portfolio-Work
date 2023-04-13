@@ -1,5 +1,5 @@
-const { fetchReview } = require("../Models/reviews.model")
-const { fetchAllReviews } = require("../Models/reviews.model");
+const { fetchReview, fetchAllReviews, updateReview } = require("../Models/reviews.model")
+
 
 
 
@@ -18,6 +18,18 @@ exports.getReviews = (req, res, next) => {
   fetchAllReviews()
     .then((reviews) => {
       res.status(200).send({ reviews });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.patchReview = (req, res, next) => {
+  const { reviewID } = req.params;
+  const newVotes = req.body.inc_votes;
+  updateReview(reviewID, newVotes)
+    .then(([review]) => {
+      res.status(200).send({ review });
     })
     .catch((err) => {
       next(err);
