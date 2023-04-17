@@ -3,10 +3,12 @@ const { handlePSQLErrors, handleCustomErrors, handleServerErrors } = require('..
 const { getCategories } = require('../Controllers/category.controller')
 const { getReview, getReviews, patchReview } = require('../Controllers/reviews.controller')
 const { getComments, postComment } = require("../Controllers/comments.controller");
+const cors = require('cors')
 
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 
 app.get('/api/categories', getCategories);
