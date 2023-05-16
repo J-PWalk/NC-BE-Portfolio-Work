@@ -1,22 +1,25 @@
 const express = require('express');
 const { handlePSQLErrors, handleCustomErrors, handleServerErrors } = require('../Controllers/errors.controller');
 const { getCategories } = require('../Controllers/category.controller')
-const { getReview } = require('../Controllers/reviews.controller')
-const { getReviews } = require('../Controllers/reviews.controller');
+const { getReview, getReviews, patchReview } = require('../Controllers/reviews.controller')
 const { getComments, postComment } = require("../Controllers/comments.controller");
+const cors = require('cors')
 
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 
 app.get('/api/categories', getCategories);
 
 app.get('/api/reviews/:reviewID',getReview)
 app.get('/api/reviews', getReviews);
+app.patch('/api/reviews/:reviewID',patchReview)
 
 app.get("/api/reviews/:review_id/comments", getComments);
 app.post("/api/reviews/:review_id/comments", postComment);
+
 
 
 app.use(handleCustomErrors);
