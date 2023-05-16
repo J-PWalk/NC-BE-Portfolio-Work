@@ -328,3 +328,31 @@ describe('METHOD: POST', () => {
         });
     });
   });
+  describe('/api/comments/:comment_id', () => {
+    describe('METHOD: DELETE', () => {
+      it('DELETE 204: should delete a comment by id and respond with status 204', () => {
+        return request(app)
+          .delete('/api/comments/1')
+          .expect(204);
+      });
+  
+      it('DELETE 404: should respond with status 404 when trying to delete a non-existing comment', () => {
+        return request(app)
+          .delete('/api/comments/99999')
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Comment does not exist');
+          });
+      });
+  
+      it('DELETE 400: should respond with status 400 when given a non-numeric comment id', () => {
+        return request(app)
+          .delete('/api/comments/not-a-number')
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Invalid Input');
+          });
+      });
+    });
+  });
+  

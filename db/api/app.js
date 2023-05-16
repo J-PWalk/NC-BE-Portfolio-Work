@@ -2,7 +2,7 @@ const express = require('express');
 const { handlePSQLErrors, handleCustomErrors, handleServerErrors } = require('../Controllers/errors.controller');
 const { getCategories } = require('../Controllers/category.controller')
 const { getReview, getReviews, patchReview } = require('../Controllers/reviews.controller')
-const { getComments, postComment } = require("../Controllers/comments.controller");
+const { getComments, postComment, deleteComment } = require("../Controllers/comments.controller");
 const cors = require('cors')
 
 
@@ -19,6 +19,7 @@ app.patch('/api/reviews/:reviewID',patchReview)
 
 app.get("/api/reviews/:review_id/comments", getComments);
 app.post("/api/reviews/:review_id/comments", postComment);
+app.delete('/api/comments/:comment_id', deleteComment);
 
 
 
