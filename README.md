@@ -1,7 +1,11 @@
+Certainly! Here is your updated README.md:
+
 # be-nc-games
 
 ## Description
 be-nc-games is a backend server for an application that manages game reviews. It provides various API endpoints to retrieve information about game categories and reviews. This project uses Express.js as the server framework and PostgreSQL as the database.
+
+The backend application is hosted on [Render](https://render.com/), with the PostgreSQL database hosted on [ElephantSQL](https://www.elephantsql.com/). The corresponding frontend application is hosted on [Netlify](https://www.netlify.com/) and can be accessed [here](https://ncgamenexus.netlify.app/).
 
 ## Installation
 1. Clone the repository
@@ -12,11 +16,10 @@ be-nc-games is a backend server for an application that manages game reviews. It
    ```
 
 ## Usage
-To start the server, run the following command:
+To start the server locally, run the following command:
 ```
 npm start
 ```
-
 The server will start running at `http://localhost:3000`.
 
 ### Available Endpoints
@@ -68,14 +71,15 @@ The application uses PostgreSQL as the database. The configuration for different
 - `.env.development`: Contains the development database name.
 - `.env.test`: Contains the test database name.
 
+For local development and testing, ensure that you have PostgreSQL installed and running locally. Update the `.env.development` and `.env.test` files with your local database names.
+
 ## Testing
 To run the tests, use the following command:
 ```
 npm test
 ```
-## Deployment
-To deploy this project to a production environment, follow these steps:
 
-1. Set the necessary environment variables for production, such as the database URL and any secret keys.
-2. Configure the server or hosting platform with the appropriate settings and dependencies.
-3. Run the project using a process manager like PM2 or deploy it to a hosting platform like Heroku.
+## Deployment
+The application is deployed on Render, with the PostgreSQL database hosted on ElephantSQL. The corresponding frontend is hosted on Netlify.
+
+Enjoy using be-nc-games!

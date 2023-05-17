@@ -68,7 +68,6 @@ describe("/api/reviews/:review_id", () => {
           expect(res.body.msg).toBe("No review found");
         });
     });
-
     it("GET:400 should send an appropriate error message when given an invalid id", () => {
       return request(app)
         .get("/api/reviews/not-a-review")
@@ -91,7 +90,6 @@ describe("/api/reviews", () => {
           expect(reviews).toBeInstanceOf(Array);
           expect(reviews).toHaveLength(13);
           expect(reviews).toBeSortedBy("created_at", { descending: true });
-
           reviews.forEach((review) => {
             expect(review).toMatchObject({
               owner: expect.any(String),
@@ -351,6 +349,35 @@ describe('METHOD: POST', () => {
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe('Invalid Input');
+          });
+      });
+    });
+  });
+  describe("/api/users", () => {
+    describe("METHOD: GET", () => {
+      it("GET 200: should respond with all users", () => {
+        return request(app)
+          .get("/api/users")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.users).toBeInstanceOf(Array);
+            expect(body.users.length).toBeGreaterThan(0);
+            body.users.forEach((user) => {
+              expect(user).toMatchObject({
+                username: expect.any(String),
+                name: expect.any(String),
+                avatar_url: expect.any(String),
+              });
+            });
+          });
+      });
+  
+      it("404: when given an invalid endpoint respond with error message", () => {
+        return request(app)
+          .get("/api/incorrect-path")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.message).toBe("Invalid Path");
           });
       });
     });
