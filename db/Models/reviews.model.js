@@ -13,7 +13,24 @@ exports.fetchReview = (review_id) => {
   });
 };
 
-exports.fetchAllReviews = () => {
+
+exports.fetchAllReviews = (sort_by = 'created_at', order = 'desc', category) => {
+  // Define the valid columns for sorting
+  const validColumns = ['review_id', 'title', 'category', 'created_at', 'votes'];
+  
+  // Define valid orders
+  const validOrder = ['asc', 'desc'];
+
+  // Check if provided sort_by column is valid
+  if (!validColumns.includes(sort_by)) {
+    return Promise.reject({ status: 400, msg: 'Invalid sort_by column' });
+  }
+
+  // Check if provided order is valid
+  if (!validOrder.includes(order)) {
+    return Promise.reject({ status: 400, msg: 'Invalid order' });
+  }
+
   let queryString = `
   SELECT 
   reviews.review_id, 
@@ -27,14 +44,23 @@ exports.fetchAllReviews = () => {
   COUNT(comments.comment_id) AS comment_count 
   FROM reviews 
   LEFT JOIN comments 
-  ON comments.review_id = reviews.review_id
-  GROUP BY reviews.review_id 
-  ORDER BY reviews.created_at DESC`;
+  ON comments.review_id = reviews.review_id `;
 
-  return db.query(queryString).then(({ rows }) => {
+  const queryParams = [];
+
+  if (category) {
+    queryParams.push(category);
+    queryString += `WHERE category = $${queryParams.length} `;
+  }
+
+  queryString += `GROUP BY reviews.review_id 
+  ORDER BY ${sort_by} ${order}`;
+
+  return db.query(queryString, queryParams).then(({ rows }) => {
     return rows;
   });
 };
+
 
 exports.updateReview = (review_id, votes) => {
   return db
