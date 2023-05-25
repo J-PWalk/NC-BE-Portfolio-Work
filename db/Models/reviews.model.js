@@ -15,7 +15,7 @@ exports.fetchReview = (review_id) => {
 
 
 exports.fetchAllReviews = (sort_by = 'created_at', order = 'desc', category) => {
-  // Define the valid columns for sorting
+  // Define valid columns for sorting
   const validColumns = ['review_id', 'title', 'category', 'created_at', 'votes'];
   
   // Define valid orders
